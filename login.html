@@ -5,45 +5,301 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - KAN LUME Banking</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #1e3a8a;
+            --primary-blue: #1e40af;
             --secondary-blue: #3b82f6;
             --light-gray: #f8fafc;
             --dark-gray: #64748b;
         }
-        body { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); min-height: 100vh; }
-        .login-container { background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .btn-primary { background: var(--primary-blue); border: none; }
-        .btn-primary:hover { background: var(--secondary-blue); }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: url('images/authbc.jpg') center/cover no-repeat;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+        
+        .auth-container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        .left-panel {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .right-panel {
+            background: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .brand-logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .brand-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-form {
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .form-control {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 0.2rem rgba(30, 64, 175, 0.25);
+        }
+        
+        .btn-primary {
+            background: var(--primary-blue);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary-blue);
+            transform: translateY(-2px);
+        }
+        
+        .quick-services {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .service-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+        
+        .service-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .license-text {
+            position: absolute;
+            bottom: 1rem;
+            left: 3rem;
+            right: 3rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+            }
+            
+            .left-panel, .right-panel {
+                min-height: auto;
+                padding: 2rem;
+            }
+            
+            .left-panel {
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container-fluid d-flex align-items-center justify-content-center min-vh-100">
-        <div class="login-container p-5" style="max-width: 400px; width: 100%;">
-            <div class="text-center mb-4">
-                <h2 class="fw-bold text-primary">KAN LUME</h2>
-                <p class="text-muted">Secure Banking Login</p>
+    <div class="auth-container">
+        <div class="col-lg-7 left-panel">
+            <div>
+                <div class="brand-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    KAN LUME Bank
+                </div>
+                <div class="brand-tagline">
+                    WELCOME TO THE<br>
+                    <strong>NEW Internet Banking</strong>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div>
+                        <strong>New to KAN LUME Bank?</strong><br>
+                        <small>Open a new account</small>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <strong>Already have an account?</strong><br>
+                        <small>Create a digital profile</small>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div>
+                        <strong>Quick Services</strong><br>
+                        <small>Account modification without visiting a bank</small>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <strong>Locate us</strong><br>
+                        <small>Find the closest branch or ATM</small>
+                    </div>
+                </div>
+                
+                <div class="quick-services">
+                    <a href="#" class="service-icon">
+                        <i class="fas fa-university"></i>
+                        <small>BizNaira</small>
+                    </a>
+                    <a href="#" class="service-icon">
+                        <i class="fas fa-credit-card"></i>
+                        <small>Pension</small>
+                    </a>
+                    <a href="#" class="service-icon">
+                        <i class="fas fa-wallet"></i>
+                        <small>Shared wallet</small>
+                    </a>
+                    <a href="#" class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                        <small>Insurance</small>
+                    </a>
+                    <a href="#" class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                        <small>Stocks</small>
+                    </a>
+                </div>
             </div>
             
-            <form id="loginForm">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="email" required>
-                </div>
+            <div class="license-text">
+                KAN LUME Bank is licensed by the Central Bank of Nigeria
+            </div>
+        </div>
+        
+        <div class="col-lg-5 right-panel">
+            <div class="login-form">
+                <h3 class="mb-4 text-center">Login to your account</h3>
                 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" required>
-                </div>
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Internet Banking ID*</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" id="email" required>
+                            <span class="input-group-text">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password*</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" required>
+                            <span class="input-group-text">
+                                <i class="fas fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <a href="#" class="text-primary text-decoration-none">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+                    
+                    <div class="text-center">
+                        <p class="mb-0">Don't have an account? <a href="register.html" class="text-primary text-decoration-none">Register here</a></p>
+                        <p class="mt-2"><a href="admin-login.html" class="text-muted text-decoration-none">Admin Login</a></p>
+                    </div>
+                </form>
                 
-                <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
-                
-                <div class="text-center">
-                    <p class="mb-0">Don't have an account? <a href="register.html" class="text-decoration-none">Register here</a></p>
-                    <p class="mt-2"><a href="admin-login.html" class="text-decoration-none text-muted">Admin Login</a></p>
+                <div class="text-center mt-4">
+                    <small class="text-muted">
+                        <a href="#" class="text-decoration-none">Terms and Condition</a> | 
+                        <a href="#" class="text-decoration-none">Privacy Policy</a>
+                    </small>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -68,6 +324,15 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const password = document.getElementById('password');
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
         
         // Login form handler
         document.getElementById('loginForm').addEventListener('submit', async (e) => {

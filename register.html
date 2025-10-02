@@ -5,80 +5,222 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - KAN LUME Banking</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #1e3a8a;
+            --primary-blue: #1e40af;
             --secondary-blue: #3b82f6;
             --light-gray: #f8fafc;
             --dark-gray: #64748b;
         }
-        body { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); min-height: 100vh; }
-        .register-container { background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .btn-primary { background: var(--primary-blue); border: none; }
-        .btn-primary:hover { background: var(--secondary-blue); }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: url('images/authbc.jpg') center/cover no-repeat;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+        
+        .auth-container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+        
+        .register-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 800px;
+            width: 100%;
+            margin: 2rem;
+        }
+        
+        .register-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .register-body {
+            padding: 2rem;
+        }
+        
+        .brand-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .form-control {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 0.2rem rgba(30, 64, 175, 0.25);
+        }
+        
+        .btn-primary {
+            background: var(--primary-blue);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary-blue);
+            transform: translateY(-2px);
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.5rem;
+            font-weight: bold;
+            color: #64748b;
+        }
+        
+        .step.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .register-card {
+                margin: 1rem;
+            }
+            
+            .register-header, .register-body {
+                padding: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container-fluid d-flex align-items-center justify-content-center min-vh-100 py-4">
-        <div class="register-container p-5" style="max-width: 600px; width: 100%;">
-            <div class="text-center mb-4">
-                <h2 class="fw-bold text-primary">KAN LUME</h2>
-                <p class="text-muted">Create Your Banking Account</p>
+    <div class="auth-container">
+        <div class="register-card">
+            <div class="register-header">
+                <div class="brand-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    KAN LUME Bank
+                </div>
+                <p class="mb-0">Create Your Banking Account</p>
             </div>
             
-            <form id="registerForm">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="firstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="firstName" required>
+            <div class="register-body">
+                <div class="step-indicator">
+                    <div class="step active">1</div>
+                    <div class="step">2</div>
+                    <div class="step">3</div>
+                </div>
+                
+                <form id="registerForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName" class="form-label">First Name*</label>
+                            <input type="text" class="form-control" id="firstName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName" class="form-label">Last Name*</label>
+                            <input type="text" class="form-control" id="lastName" required>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="lastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="lastName" required>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address*</label>
+                        <input type="email" class="form-control" id="email" required>
                     </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="email" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" id="phone" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="address" class="form-label">Address</label>
-                    <textarea class="form-control" id="address" rows="2" required></textarea>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="ssn" class="form-label">Social Security Number</label>
-                    <input type="text" class="form-control" id="ssn" placeholder="XXX-XX-XXXX" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPassword" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="initialDeposit" class="form-label">Initial Deposit ($)</label>
-                    <input type="number" class="form-control" id="initialDeposit" min="100" step="0.01" required>
-                </div>
-                
-                <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
-                
-                <div class="text-center">
-                    <p class="mb-0">Already have an account? <a href="login.html" class="text-decoration-none">Login here</a></p>
-                </div>
-            </form>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label">Phone Number*</label>
+                            <input type="tel" class="form-control" id="phone" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="ssn" class="form-label">Social Security Number*</label>
+                            <input type="text" class="form-control" id="ssn" placeholder="XXX-XX-XXXX" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address*</label>
+                        <textarea class="form-control" id="address" rows="2" required></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="password" class="form-label">Password*</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password*</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="initialDeposit" class="form-label">Initial Deposit ($)*</label>
+                        <input type="number" class="form-control" id="initialDeposit" min="100" step="0.01" required>
+                        <small class="text-muted">Minimum deposit: $100</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 mb-3">
+                        <i class="fas fa-user-plus me-2"></i>Create Account
+                    </button>
+                    
+                    <div class="text-center">
+                        <p class="mb-0">Already have an account? <a href="login.html" class="text-primary text-decoration-none">Login here</a></p>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                            By creating an account, you agree to our 
+                            <a href="#" class="text-decoration-none">Terms and Conditions</a> and 
+                            <a href="#" class="text-decoration-none">Privacy Policy</a>
+                        </small>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
