@@ -3,63 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAN LUME - Online Banking Platform</title>
+    <title>KAN LUME - The first bank you'll love</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #1e3a8a;
-            --secondary-blue: #3b82f6;
-            --light-gray: #f8fafc;
-            --dark-gray: #64748b;
+            --primary-color: #00D4AA;
+            --secondary-color: #1A1A1A;
+            --text-dark: #1A1A1A;
+            --text-light: #666666;
+            --background-light: #F8F9FA;
+            --white: #FFFFFF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--light-gray) 0%, #e2e8f0 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
         }
         
         .navbar-brand {
             font-weight: 700;
             font-size: 1.8rem;
-            color: var(--primary-blue) !important;
+            color: var(--text-dark) !important;
         }
         
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+        
+        .btn-login {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            background: #00B894;
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
         .hero-section {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-            color: white;
-            padding: 100px 0;
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(26, 26, 26, 0.05) 100%),
+                        url('images/moneystack.jpg') center/cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.9) 100%);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+        
+        .btn-primary-hero {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
+        }
+        
+        .btn-primary-hero:hover {
+            background: #00B894;
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 212, 170, 0.4);
+        }
+        
+        .hero-image {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 6rem 0;
+            background: var(--white);
         }
         
         .feature-card {
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+            border: 1px solid #E9ECEF;
+            transition: all 0.3s ease;
+            height: 100%;
         }
         
         .feature-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         
-        .btn-primary {
-            background-color: var(--primary-blue);
-            border-color: var(--primary-blue);
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), #00B894);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--white);
+            font-size: 2rem;
         }
         
-        .btn-primary:hover {
-            background-color: var(--secondary-blue);
-            border-color: var(--secondary-blue);
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
         }
         
+        .feature-description {
+            color: var(--text-light);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        /* Banking Services Section */
+        .services-section {
+            padding: 6rem 0;
+            background: var(--background-light);
+        }
+        
+        .service-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            margin-right: 1.5rem;
+        }
+        
+        .service-content h5 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        
+        .service-content p {
+            color: var(--text-light);
+            margin: 0;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, var(--text-dark) 0%, #333333 100%);
+            color: var(--white);
+            text-align: center;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+        
+        /* Footer */
         .footer {
-            background-color: var(--primary-blue);
-            color: white;
+            background: var(--text-dark);
+            color: var(--white);
+            padding: 3rem 0 2rem;
+        }
+        
+        .footer h5 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-link {
+            color: #CCCCCC;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .feature-card {
+                padding: 2rem;
+            }
+            
+            .service-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .service-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <i class="fas fa-university me-2"></i>KAN LUME
@@ -68,111 +311,224 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="#home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Services</a>
+                        <a class="nav-link" href="#features">Features</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="#services">Services</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.html">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="register.html">Register</a>
+                        <a class="nav-link" href="#about">About</a>
                     </li>
                 </ul>
+                <div class="d-flex gap-2">
+                    <a href="login.html" class="nav-link">Sign in</a>
+                    <a href="register.html" class="btn-login">Open bank account</a>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section id="home" class="hero-section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold mb-4">Welcome to KAN LUME</h1>
-                    <p class="lead mb-4">Your trusted online banking partner in Italy. Experience secure, convenient, and modern banking services at your fingertips.</p>
-                    <div class="d-flex gap-3">
-                        <a href="login.html" class="btn btn-light btn-lg px-4">Login</a>
-                        <a href="register.html" class="btn btn-outline-light btn-lg px-4">Open Account</a>
-                    </div>
+                <div class="col-lg-6 hero-content">
+                    <h1 class="hero-title">The first bank you'll love</h1>
+                    <p class="hero-subtitle">Bank, save, and invest in one beautifully simple app trusted by millions.</p>
+                    <a href="register.html" class="btn-primary-hero">Open bank account</a>
                 </div>
-                <div class="col-lg-6 text-center">
-                    <i class="fas fa-mobile-alt" style="font-size: 200px; opacity: 0.8;"></i>
+                <div class="col-lg-6 hero-image">
+                    <img src="images/tab.jpg" alt="KAN LUME Banking App" class="img-fluid">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="py-5">
+    <section id="features" class="features-section">
         <div class="container">
             <div class="row text-center mb-5">
                 <div class="col-12">
-                    <h2 class="fw-bold text-dark">Banking Made Simple</h2>
-                    <p class="text-muted">Discover our comprehensive online banking features</p>
+                    <h2 class="display-5 fw-bold mb-3">Banking made simple</h2>
+                    <p class="lead text-muted">Experience the future of banking with our innovative features</p>
                 </div>
             </div>
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card feature-card h-100 text-center p-4">
-                        <div class="card-body">
-                            <i class="fas fa-shield-alt text-primary mb-3" style="font-size: 3rem;"></i>
-                            <h5 class="card-title">Secure Banking</h5>
-                            <p class="card-text">Advanced security measures to protect your financial information and transactions.</p>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Mobile First</h3>
+                        <p class="feature-description">100% mobile banking designed for your smartphone. Bank anywhere, anytime with our intuitive app.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Bank-level Security</h3>
+                        <p class="feature-description">Your money is protected with advanced encryption and biometric authentication for complete peace of mind.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="feature-title">Instant Transfers</h3>
+                        <p class="feature-description">Send and receive money instantly with real-time notifications and zero hidden fees.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banking Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="display-6 fw-bold mb-4">Everything you need in one app</h2>
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="service-content">
+                            <h5>Smart Debit Card</h5>
+                            <p>Get your virtual card instantly and start spending right away</p>
+                        </div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="service-content">
+                            <h5>Spending Insights</h5>
+                            <p>Track your expenses with intelligent categorization and budgeting tools</p>
+                        </div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <div class="service-content">
+                            <h5>Smart Savings</h5>
+                            <p>Automated savings with competitive interest rates to grow your money</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card feature-card h-100 text-center p-4">
-                        <div class="card-body">
-                            <i class="fas fa-exchange-alt text-primary mb-3" style="font-size: 3rem;"></i>
-                            <h5 class="card-title">Easy Transfers</h5>
-                            <p class="card-text">Transfer money between accounts or to other users instantly and securely.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card feature-card h-100 text-center p-4">
-                        <div class="card-body">
-                            <i class="fas fa-chart-line text-primary mb-3" style="font-size: 3rem;"></i>
-                            <h5 class="card-title">Account Management</h5>
-                            <p class="card-text">Monitor your balances, view transaction history, and manage your finances.</p>
-                        </div>
-                    </div>
+                <div class="col-lg-6 text-center">
+                    <img src="images/atmcard.jpg" alt="KAN LUME Card" class="img-fluid" style="max-width: 400px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="py-5 bg-light">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-4">Ready to Get Started?</h2>
-            <p class="lead mb-4">Join thousands of satisfied customers who trust KAN LUME for their banking needs.</p>
-            <a href="register.html" class="btn btn-primary btn-lg px-5">Open Your Account Today</a>
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Ready to love your bank?</h2>
+            <p class="cta-subtitle">Join millions who have already made the switch to smarter banking</p>
+            <a href="register.html" class="btn-primary-hero">Open your account today</a>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer py-4">
+    <footer id="about" class="footer">
         <div class="container">
             <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5><i class="fas fa-university me-2"></i>KAN LUME</h5>
+                    <p class="text-muted">The first bank you'll love. Modern banking designed for the digital age.</p>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Product</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="footer-link">Current Account</a></li>
+                        <li><a href="#" class="footer-link">Savings</a></li>
+                        <li><a href="#" class="footer-link">Investments</a></li>
+                        <li><a href="#" class="footer-link">Insurance</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Company</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="footer-link">About Us</a></li>
+                        <li><a href="#" class="footer-link">Careers</a></li>
+                        <li><a href="#" class="footer-link">Press</a></li>
+                        <li><a href="#" class="footer-link">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Support</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="footer-link">Help Center</a></li>
+                        <li><a href="#" class="footer-link">Contact</a></li>
+                        <li><a href="#" class="footer-link">Security</a></li>
+                        <li><a href="#" class="footer-link">Status</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="footer-link">Privacy</a></li>
+                        <li><a href="#" class="footer-link">Terms</a></li>
+                        <li><a href="#" class="footer-link">Cookies</a></li>
+                        <li><a href="#" class="footer-link">Licenses</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: #444;">
+            <div class="row align-items-center">
                 <div class="col-md-6">
-                    <h5>KAN LUME Bank</h5>
-                    <p class="mb-0">Your trusted banking partner in Italy</p>
+                    <p class="mb-0 text-muted">&copy; 2024 KAN LUME Bank. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="mb-0">&copy; 2024 KAN LUME. All rights reserved.</p>
+                    <div class="social-links">
+                        <a href="#" class="footer-link me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="footer-link me-3"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="footer-link me-3"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-instagram"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.backdropFilter = 'blur(10px)';
+            } else {
+                navbar.style.background = '#FFFFFF';
+                navbar.style.backdropFilter = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
