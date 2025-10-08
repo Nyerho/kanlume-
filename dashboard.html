@@ -356,19 +356,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        // Firebase configuration
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
-        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
-        import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
-
-        // Firebase config (replace with your actual config)
-        const firebaseConfig = {
-            // Your Firebase configuration
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        // Import Firebase services
+        import { auth, onAuthStateChanged, FirebaseService } from './firebase-config.js';
         
         let currentUser = null;
         let userData = null;
@@ -385,15 +374,13 @@
 
         // Load user data from Firestore
         async function loadUserData() {
-            try {
-                const userDoc = await getDoc(doc(db, `artifacts/kanlume/users/${currentUser.uid}`));
-                if (userDoc.exists()) {
-                    userData = userDoc.data();
-                    updateUI();
-                    loadTransactions();
-                }
-            } catch (error) {
-                console.error('Error loading user data:', error);
+            const result = await FirebaseService.getUserData(currentUser.uid);
+            if (result.success) {
+                userData = result.data;
+                updateUI();
+                loadTransactions();
+            } else {
+                console.error('Error loading user data:', result.error);
             }
         }
 
@@ -405,6 +392,186 @@
             document.getElementById('checkingBalance').textContent = userData.checkingBalance.toFixed(2);
             document.getElementById('savingsBalance').textContent = userData.savingsBalance.toFixed(2);
         }
+
+        // Internal transfer
+        document.getElementById('internalTransferForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fromAccount = document.getElementById('fromAccount').value;
+            const toAccount = document.getElementById('toAccount').value;
+            const amount = parseFloat(document.getElementById('internalAmount').value);
+            
+            if (fromAccount === toAccount) {
+                alert('Cannot transfer to the same account');
+                return;
+            }
+            
+            const result = await FirebaseService.internalTransfer(
+                currentUser.uid, fromAccount, toAccount, amount
+            );
+            
+            if (result.success) {
+                alert('Transfer completed successfully!');
+                await loadUserData();
+                document.getElementById('internalTransferForm').reset();
+            } else {
+                alert('Transfer failed: ' + result.error);
+            }
+        });
+
+        // External transfer
+        document.getElementById('externalTransferForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const recipientId = document.getElementById('recipientId').value;
+            const fromAccount = document.getElementById('externalFromAccount').value;
+            const amount = parseFloat(document.getElementById('externalAmount').value);
+            const description = document.getElementById('transferDescription').value || 'External transfer';
+            
+            const result = await FirebaseService.externalTransfer(
+                currentUser.uid, recipientId, fromAccount, amount, description
+            );
+            
+            if (result.success) {
+                alert('Transfer completed successfully!');
+                await loadUserData();
+                document.getElementById('externalTransferForm').reset();
+            } else {
+                alert('Transfer failed: ' + result.error);
+            }
+        });
+
+        // Bill pay
+        document.getElementById('billPayForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const payee = document.getElementById('payee').value;
+            const accountNumber = document.getElementById('accountNumber').value;
+            const amount = parseFloat(document.getElementById('billAmount').value);
+            const notes = document.getElementById('billNotes').value;
+            
+            const result = await FirebaseService.payBill(
+                currentUser.uid, payee, accountNumber, amount, notes
+            );
+            
+            if (result.success) {
+                alert('Bill payment completed successfully!');
+                await loadUserData();
+                document.getElementById('billPayForm').reset();
+            } else {
+                alert('Bill payment failed: ' + result.error);
+            }
+        });
+
+        // Logout function
+        window.logout = async function() {
+            const result = await FirebaseService.logoutUser();
+            if (result.success) {
+                window.location.href = 'login.html';
+            }
+        };
+
+        // Load transaction history
+        function loadTransactions() {
+            const tbody = document.getElementById('transactionTableBody');
+            if (userData.transactions && userData.transactions.length > 0) {
+                tbody.innerHTML = '';
+                userData.transactions.reverse().forEach(transaction => {
+                    const row = document.createElement('tr');
+                    row.className = 'transaction-row';
+                    row.innerHTML = `
+                        <td>${new Date(transaction.date).toLocaleDateString()}</td>
+                        <td><span class="badge bg-${transaction.type === 'credit' ? 'success' : 'danger'}">${transaction.type}</span></td>
+                        <td>${transaction.description}</td>
+                        <td class="${transaction.type === 'credit' ? 'text-success' : 'text-danger'}">
+                            ${transaction.type === 'credit' ? '+' : '-'}€${Math.abs(transaction.amount).toFixed(2)}
+                        </td>
+                        <td>€${transaction.balance.toFixed(2)}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No transactions found</td></tr>';
+            }
+        }
+
+        // Internal transfer
+        document.getElementById('internalTransferForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fromAccount = document.getElementById('fromAccount').value;
+            const toAccount = document.getElementById('toAccount').value;
+            const amount = parseFloat(document.getElementById('internalAmount').value);
+            
+            if (fromAccount === toAccount) {
+                alert('Cannot transfer to the same account');
+                return;
+            }
+            
+            const result = await FirebaseService.internalTransfer(
+                currentUser.uid, fromAccount, toAccount, amount
+            );
+            
+            if (result.success) {
+                alert('Transfer completed successfully!');
+                await loadUserData();
+                document.getElementById('internalTransferForm').reset();
+            } else {
+                alert('Transfer failed: ' + result.error);
+            }
+        });
+
+        // External transfer
+        document.getElementById('externalTransferForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const recipientId = document.getElementById('recipientId').value;
+            const fromAccount = document.getElementById('externalFromAccount').value;
+            const amount = parseFloat(document.getElementById('externalAmount').value);
+            const description = document.getElementById('transferDescription').value || 'External transfer';
+            
+            const result = await FirebaseService.externalTransfer(
+                currentUser.uid, recipientId, fromAccount, amount, description
+            );
+            
+            if (result.success) {
+                alert('Transfer completed successfully!');
+                await loadUserData();
+                document.getElementById('externalTransferForm').reset();
+            } else {
+                alert('Transfer failed: ' + result.error);
+            }
+        });
+
+        // Bill pay
+        document.getElementById('billPayForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const payee = document.getElementById('payee').value;
+            const accountNumber = document.getElementById('accountNumber').value;
+            const amount = parseFloat(document.getElementById('billAmount').value);
+            const notes = document.getElementById('billNotes').value;
+            
+            const result = await FirebaseService.payBill(
+                currentUser.uid, payee, accountNumber, amount, notes
+            );
+            
+            if (result.success) {
+                alert('Bill payment completed successfully!');
+                await loadUserData();
+                document.getElementById('billPayForm').reset();
+            } else {
+                alert('Bill payment failed: ' + result.error);
+            }
+        });
+
+        // Logout function
+        window.logout = async function() {
+            const result = await FirebaseService.logoutUser();
+            if (result.success) {
+                window.location.href = 'login.html';
+            }
+        };
 
         // Load transaction history
         function loadTransactions() {
