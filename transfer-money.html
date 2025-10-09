@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Money - KanLume Bank</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0;
+        }
+        
+        .main-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: calc(100vh - 40px);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .content {
+            padding: 30px 20px;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e9ecef;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .step.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .step.completed {
+            background: #28a745;
+            color: white;
+        }
+        
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 2px;
+            background: #e9ecef;
+        }
+        
+        .step.completed:not(:last-child)::after {
+            background: #28a745;
+        }
+        
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .recipient-card {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .recipient-card:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .recipient-card.selected {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .recipient-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .recipient-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .recipient-details h6 {
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .recipient-details small {
+            color: #6c757d;
+        }
+        
+        .amount-input {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            border: none;
+            border-bottom: 3px solid #667eea;
+            background: transparent;
+            color: #667eea;
+            margin: 20px 0;
+        }
+        
+        .amount-input:focus {
+            outline: none;
+            border-bottom-color: #764ba2;
+        }
+        
+        .quick-amounts {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .quick-amount {
+            flex: 1;
+            min-width: 70px;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-amount:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .summary-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .summary-row.total {
+            border-top: 2px solid #dee2e6;
+            padding-top: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .verification-code {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .code-input {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .code-input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        .success-animation {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #28a745;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h4 class="mb-0">Transfer Money</h4>
+        </div>
+        
+        <div class="content">
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step active" id="step1">1</div>
+                <div class="step" id="step2">2</div>
+                <div class="step" id="step3">3</div>
+                <div class="step" id="step4">4</div>
+            </div>
+            
+            <!-- Step 1: Select Recipient -->
+            <div class="form-section active" id="section1">
+                <h5 class="mb-3">Select Recipient</h5>
+                
+                <div class="form-group">
+                    <label class="form-label">Recent Recipients</label>
+                    <div id="recentRecipients">
+                        <!-- Recent recipients will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Or Enter New Recipient</label>
+                    <input type="text" class="form-control" id="recipientName" placeholder="Recipient Name">
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" class="form-control" id="recipientAccount" placeholder="Account Number">
+                </div>
+                
+                <div class="form-group">
+                    <select class="form-control" id="transferType">
+                        <option value="internal">Internal Transfer (KanLume Bank)</option>
+                        <option value="external">External Transfer (Other Bank)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="bankNameGroup" style="display: none;">
+                    <input type="text" class="form-control" id="bankName" placeholder="Bank Name">
+                </div>
+                
+                <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+            </div>
+            
+            <!-- Step 2: Enter Amount -->
+            <div class="form-section" id="section2">
+                <h5 class="mb-3">Enter Amount</h5>
+                
+                <div class="text-center">
+                    <div class="form-group">
+                        <label class="form-label">Amount (USD)</label>
+                        <input type="number" class="form-control amount-input" id="transferAmount" placeholder="0.00" step="0.01">
+                    </div>
+                    
+                    <div class="quick-amounts">
+                        <button class="quick-amount" onclick="setAmount(50)">$50</button>
+                        <button class="quick-amount" onclick="setAmount(100)">$100</button>
+                        <button class="quick-amount" onclick="setAmount(250)">$250</button>
+                        <button class="quick-amount" onclick="setAmount(500)">$500</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description (Optional)</label>
+                    <input type="text" class="form-control" id="transferDescription" placeholder="What's this for?">
+                </div>
+                
+                <div class="summary-card">
+                    <div class="summary-row">
+                        <span>Transfer Amount:</span>
+                        <span id="summaryAmount">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Transfer Fee:</span>
+                        <span id="summaryFee">$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="summaryTotal">$0.00</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            </div>
+            
+            <!-- Step 3: Verification -->
+            <div class="form-section" id="section3">
+                <h5 class="mb-3">Verify Transfer</h5>
+                
+                <div class="summary-card">
+                    <h6>Transfer Details</h6>
+                    <div class="summary-row">
+                        <span>To:</span>
+                        <span id="verifyRecipient"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Account:</span>
+                        <span id="verifyAccount"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Amount:</span>
+                        <span id="verifyAmount"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Fee:</span>
+                        <span id="verifyFee"></span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="verifyTotal"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Enter Verification Code</label>
+                    <p class="text-muted small">We've sent a 6-digit code to your registered phone number</p>
+                    <div class="verification-code">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 0)">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 1)">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 2)">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 3)">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 4)">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 5)">
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="processTransfer()">Confirm Transfer</button>
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            </div>
+            
+            <!-- Step 4: Success -->
+            <div class="form-section" id="section4">
+                <div class="success-animation">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h5>Transfer Successful!</h5>
+                    <p class="text-muted">Your money has been transferred successfully.</p>
+                    
+                    <div class="summary-card">
+                        <h6>Transaction Details</h6>
+                        <div class="summary-row">
+                            <span>Transaction ID:</span>
+                            <span id="transactionId"></span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Date:</span>
+                            <span id="transactionDate"></span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Amount:</span>
+                            <span id="finalAmount"></span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="goToDashboard()">Back to Dashboard</button>
+                    <button class="btn btn-secondary" onclick="newTransfer()">New Transfer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notifications -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="successToast" class="toast" role="alert">
+            <div class="toast-header">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+        
+        <div id="errorToast" class="toast" role="alert">
+            <div class="toast-header">
+                <i class="fas fa-exclamation-circle text-danger me-2"></i>
+                <strong class="me-auto">Error</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { auth, db, FirebaseService } from './firebase-config.js';
+        import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        
+        let currentStep = 1;
+        let currentUser = null;
+        let transferData = {};
+        
+        // Initialize
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loadRecentRecipients();
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+        
+        // Load recent recipients
+        async function loadRecentRecipients() {
+            try {
+                const transactions = await FirebaseService.getUserTransactions(currentUser.uid);
+                const recipients = new Map();
+                
+                transactions.forEach(transaction => {
+                    if (transaction.type === 'transfer' && transaction.recipientName) {
+                        recipients.set(transaction.recipientAccount, {
+                            name: transaction.recipientName,
+                            account: transaction.recipientAccount,
+                            bank: transaction.recipientBank || 'KanLume Bank'
+                        });
+                    }
+                });
+                
+                const recentRecipientsDiv = document.getElementById('recentRecipients');
+                if (recipients.size === 0) {
+                    recentRecipientsDiv.innerHTML = '<p class="text-muted">No recent recipients</p>';
+                    return;
+                }
+                
+                recentRecipientsDiv.innerHTML = '';
+                recipients.forEach(recipient => {
+                    const recipientCard = document.createElement('div');
+                    recipientCard.className = 'recipient-card';
+                    recipientCard.innerHTML = `
+                        <div class="recipient-info">
+                            <div class="recipient-avatar">
+                                ${recipient.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div class="recipient-details">
+                                <h6>${recipient.name}</h6>
+                                <small>${recipient.account} • ${recipient.bank}</small>
+                            </div>
+                        </div>
+                    `;
+                    
+                    recipientCard.addEventListener('click', () => {
+                        selectRecipient(recipient);
+                    });
+                    
+                    recentRecipientsDiv.appendChild(recipientCard);
+                });
+            } catch (error) {
+                console.error('Error loading recent recipients:', error);
+            }
+        }
+        
+        // Select recipient
+        function selectRecipient(recipient) {
+            document.querySelectorAll('.recipient-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            document.getElementById('recipientName').value = recipient.name;
+            document.getElementById('recipientAccount').value = recipient.account;
+            document.getElementById('transferType').value = recipient.bank === 'KanLume Bank' ? 'internal' : 'external';
+            
+            if (recipient.bank !== 'KanLume Bank') {
+                document.getElementById('bankName').value = recipient.bank;
+                document.getElementById('bankNameGroup').style.display = 'block';
+            }
+        }
+        
+        // Transfer type change
+        document.getElementById('transferType').addEventListener('change', function() {
+            const bankNameGroup = document.getElementById('bankNameGroup');
+            if (this.value === 'external') {
+                bankNameGroup.style.display = 'block';
+            } else {
+                bankNameGroup.style.display = 'none';
+                document.getElementById('bankName').value = '';
+            }
+        });
+        
+        // Amount input change
+        document.getElementById('transferAmount').addEventListener('input', function() {
+            updateSummary();
+        });
+        
+        // Set quick amount
+        window.setAmount = function(amount) {
+            document.getElementById('transferAmount').value = amount;
+            updateSummary();
+        }
+        
+        // Update summary
+        function updateSummary() {
+            const amount = parseFloat(document.getElementById('transferAmount').value) || 0;
+            const transferType = document.getElementById('transferType').value;
+            
+            let fee = 0;
+            if (transferType === 'external') {
+                fee = Math.max(2.50, amount * 0.01); // $2.50 or 1%, whichever is higher
+            } else if (amount > 1000) {
+                fee = 1.00; // $1 for internal transfers over $1000
+            }
+            
+            const total = amount + fee;
+            
+            document.getElementById('summaryAmount').textContent = `$${amount.toFixed(2)}`;
+            document.getElementById('summaryFee').textContent = `$${fee.toFixed(2)}`;
+            document.getElementById('summaryTotal').textContent = `$${total.toFixed(2)}`;
+        }
+        
+        // Navigation functions
+        window.nextStep = function() {
+            if (validateCurrentStep()) {
+                if (currentStep < 4) {
+                    currentStep++;
+                    updateStepDisplay();
+                    
+                    if (currentStep === 3) {
+                        updateVerificationSummary();
+                        sendVerificationCode();
+                    }
+                }
+            }
+        }
+        
+        window.prevStep = function() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepDisplay();
+            }
+        }
+        
+        // Validate current step
+        function validateCurrentStep() {
+            switch (currentStep) {
+                case 1:
+                    const recipientName = document.getElementById('recipientName').value.trim();
+                    const recipientAccount = document.getElementById('recipientAccount').value.trim();
+                    const transferType = document.getElementById('transferType').value;
+                    const bankName = document.getElementById('bankName').value.trim();
+                    
+                    if (!recipientName || !recipientAccount) {
+                        showToast('Please enter recipient name and account number', 'error');
+                        return false;
+                    }
+                    
+                    if (transferType === 'external' && !bankName) {
+                        showToast('Please enter bank name for external transfers', 'error');
+                        return false;
+                    }
+                    
+                    transferData.recipientName = recipientName;
+                    transferData.recipientAccount = recipientAccount;
+                    transferData.transferType = transferType;
+                    transferData.bankName = bankName;
+                    return true;
+                    
+                case 2:
+                    const amount = parseFloat(document.getElementById('transferAmount').value);
+                    
+                    if (!amount || amount <= 0) {
+                        showToast('Please enter a valid amount', 'error');
+                        return false;
+                    }
+                    
+                    if (amount > 10000) {
+                        showToast('Transfer amount cannot exceed $10,000', 'error');
+                        return false;
+                    }
+                    
+                    transferData.amount = amount;
+                    transferData.description = document.getElementById('transferDescription').value.trim();
+                    return true;
+                    
+                case 3:
+                    const codeInputs = document.querySelectorAll('.code-input');
+                    const code = Array.from(codeInputs).map(input => input.value).join('');
+                    
+                    if (code.length !== 6) {
+                        showToast('Please enter the complete 6-digit verification code', 'error');
+                        return false;
+                    }
+                    
+                    // For demo purposes, accept any 6-digit code
+                    return true;
+                    
+                default:
+                    return true;
+            }
+        }
+        
+        // Update step display
+        function updateStepDisplay() {
+            // Update step indicators
+            for (let i = 1; i <= 4; i++) {
+                const step = document.getElementById(`step${i}`);
+                const section = document.getElementById(`section${i}`);
+                
+                if (i < currentStep) {
+                    step.classList.add('completed');
+                    step.classList.remove('active');
+                } else if (i === currentStep) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+                
+                if (i === currentStep) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            }
+        }
+        
+        // Update verification summary
+        function updateVerificationSummary() {
+            const amount = parseFloat(document.getElementById('transferAmount').value);
+            const transferType = document.getElementById('transferType').value;
+            
+            let fee = 0;
+            if (transferType === 'external') {
+                fee = Math.max(2.50, amount * 0.01);
+            } else if (amount > 1000) {
+                fee = 1.00;
+            }
+            
+            const total = amount + fee;
+            
+            document.getElementById('verifyRecipient').textContent = transferData.recipientName;
+            document.getElementById('verifyAccount').textContent = transferData.recipientAccount;
+            document.getElementById('verifyAmount').textContent = `$${amount.toFixed(2)}`;
+            document.getElementById('verifyFee').textContent = `$${fee.toFixed(2)}`;
+            document.getElementById('verifyTotal').textContent = `$${total.toFixed(2)}`;
+        }
+        
+        // Send verification code (mock)
+        function sendVerificationCode() {
+            // In a real app, this would send an SMS or email
+            console.log('Verification code sent: 123456');
+            showToast('Verification code sent to your phone', 'success');
+        }
+        
+        // Move to next verification code input
+        window.moveToNext = function(current, index) {
+            if (current.value.length === 1 && index < 5) {
+                document.querySelectorAll('.code-input')[index + 1].focus();
+            }
+        }
+        
+        // Process transfer
+        window.processTransfer = async function() {
+            if (!validateCurrentStep()) return;
+            
+            try {
+                const amount = parseFloat(document.getElementById('transferAmount').value);
+                const transferType = document.getElementById('transferType').value;
+                
+                let result;
+                if (transferType === 'internal') {
+                    result = await FirebaseService.internalTransfer(
+                        currentUser.uid,
+                        transferData.recipientAccount,
+                        amount,
+                        transferData.description || 'Internal Transfer'
+                    );
+                } else {
+                    result = await FirebaseService.externalTransfer(
+                        currentUser.uid,
+                        transferData.recipientName,
+                        transferData.recipientAccount,
+                        transferData.bankName,
+                        amount,
+                        transferData.description || 'External Transfer'
+                    );
+                }
+                
+                if (result.success) {
+                    // Update success page
+                    document.getElementById('transactionId').textContent = result.transactionId;
+                    document.getElementById('transactionDate').textContent = new Date().toLocaleDateString();
+                    document.getElementById('finalAmount').textContent = `$${amount.toFixed(2)}`;
+                    
+                    nextStep();
+                    showToast('Transfer completed successfully!', 'success');
+                } else {
+                    showToast(result.message || 'Transfer failed. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Transfer error:', error);
+                showToast('An error occurred. Please try again.', 'error');
+            }
+        }
+        
+        // Navigation functions
+        window.goBack = function() {
+            window.history.back();
+        }
+        
+        window.goToDashboard = function() {
+            window.location.href = 'dashboard.html';
+        }
+        
+        window.newTransfer = function() {
+            currentStep = 1;
+            updateStepDisplay();
+            
+            // Reset form
+            document.getElementById('recipientName').value = '';
+            document.getElementById('recipientAccount').value = '';
+            document.getElementById('transferAmount').value = '';
+            document.getElementById('transferDescription').value = '';
+            document.querySelectorAll('.code-input').forEach(input => input.value = '');
+            document.querySelectorAll('.recipient-card').forEach(card => card.classList.remove('selected'));
+            
+            updateSummary();
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toastId = type === 'success' ? 'successToast' : 'errorToast';
+            const toast = document.getElementById(toastId);
+            const toastBody = toast.querySelector('.toast-body');
+            
+            toastBody.textContent = message;
+            
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+        }
+    </script>
+</body>
+</html>

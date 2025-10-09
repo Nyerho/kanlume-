@@ -3,351 +3,443 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - KAN LUME</title>
+    <title>KAN LUME - Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --primary-blue: #1e3a8a;
-            --secondary-blue: #3b82f6;
-            --light-gray: #f8fafc;
-            --dark-gray: #64748b;
-            --success-green: #10b981;
-            --warning-orange: #f59e0b;
-        }
-        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light-gray);
-        }
-        
-        .sidebar {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tango, Geneva, Verdana, sans-serif;
             min-height: 100vh;
-            color: white;
+            margin: 0;
+            padding: 20px;
         }
-        
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            padding: 12px 20px;
-            border-radius: 8px;
-            margin: 5px 0;
+        .main-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 0;
+        }
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .header-card {
+            background: rgba(255,255,255,0.95);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .back-btn {
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .account-card {
+            background: rgba(255,255,255,0.95);
+            padding: 30px 25px;
+            text-align: center;
+        }
+        .bank-logo {
+            width: 60px;
+            height: 60px;
+            background: #4285f4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        .user-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .account-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .account-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .btn-action {
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 24px;
+            font-weight: 500;
+        }
+        .main-dashboard {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+        }
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .user-info h3 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #4285f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .quick-action {
+            background: #f8f9fa;
+            border: none;
+            border-radius: 15px;
+            padding: 20px 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
-        
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
+        .quick-action:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
         }
-        
+        .quick-action i {
+            font-size: 24px;
+            color: #4285f4;
+        }
         .balance-card {
-            background: linear-gradient(135deg, var(--success-green) 0%, #059669 100%);
-            color: white;
-            border: none;
+            background: #f8f9fa;
             border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
         }
-        
-        .savings-card {
-            background: linear-gradient(135deg, var(--warning-orange) 0%, #d97706 100%);
-            color: white;
-            border: none;
-            border-radius: 15px;
-        }
-        
-        .action-card {
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            transition: transform 0.3s ease;
-        }
-        
-        .action-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-blue);
-            border-color: var(--primary-blue);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--secondary-blue);
-            border-color: var(--secondary-blue);
-        }
-        
-        .transaction-row:hover {
-            background-color: rgba(30, 58, 138, 0.05);
-        }
-        
-        .brand-logo {
-            color: white;
+        .balance-amount {
+            font-size: 36px;
             font-weight: 700;
-            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 5px;
         }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                min-height: auto;
-            }
+        .balance-label {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .transactions-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+        }
+        .transaction-icon.credit {
+            background: #28a745;
+        }
+        .transaction-icon.debit {
+            background: #dc3545;
+        }
+        .transaction-details {
+            flex: 1;
+        }
+        .transaction-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .transaction-date {
+            font-size: 12px;
+            color: #666;
+        }
+        .transaction-amount {
+            font-weight: 600;
+        }
+        .amount-credit {
+            color: #28a745;
+        }
+        .amount-debit {
+            color: #dc3545;
+        }
+        .spending-chart {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .fund-card {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            text-align: center;
+        }
+        .fund-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .btn-fund {
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 15px 30px;
+            font-weight: 500;
+            width: 100%;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 sidebar p-0">
-                <div class="p-4">
-                    <div class="brand-logo mb-4">
-                        <i class="fas fa-university me-2"></i>KAN LUME
-                    </div>
-                    
-                    <div class="user-info mb-4">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-white rounded-circle p-2 me-3">
-                                <i class="fas fa-user text-primary"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold" id="userName">Loading...</div>
-                                <small class="opacity-75" id="userEmail">Loading...</small>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <nav class="nav flex-column">
-                        <a class="nav-link active" href="#" data-section="overview">
-                            <i class="fas fa-tachometer-alt me-2"></i>Overview
-                        </a>
-                        <a class="nav-link" href="#" data-section="transfer">
-                            <i class="fas fa-exchange-alt me-2"></i>Transfer Money
-                        </a>
-                        <a class="nav-link" href="#" data-section="history">
-                            <i class="fas fa-history me-2"></i>Transaction History
-                        </a>
-                        <a class="nav-link" href="#" data-section="billpay">
-                            <i class="fas fa-file-invoice-dollar me-2"></i>Bill Pay
-                        </a>
-                        <a class="nav-link" href="#" onclick="logout()">
-                            <i class="fas fa-sign-out-alt me-2"></i>Logout
-                        </a>
-                    </nav>
+    <div class="main-container">
+        <!-- Account Number Page -->
+        <div id="account-page" class="page">
+            <div class="card header-card">
+                <button class="back-btn" onclick="showPage('dashboard')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h5 class="mb-0">Your Kan Lume Account</h5>
+                <div></div>
+            </div>
+            
+            <div class="card account-card">
+                <div class="bank-logo">KL</div>
+                <div class="mb-3">Kan Lume Bank</div>
+                <div class="user-name" id="accountUserName">Loading...</div>
+                <div class="account-number" id="displayAccountNumber">Loading...</div>
+                <div class="account-subtitle">Use this to receive transfers instantly.</div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-action" onclick="shareAccountDetails()">
+                        Share Account Details
+                    </button>
+                    <button class="btn btn-action" onclick="copyAccountNumber()">
+                        Copy Number
+                    </button>
                 </div>
             </div>
             
-            <!-- Main Content -->
-            <div class="col-md-9 col-lg-10 p-4">
-                <!-- Overview Section -->
-                <div id="overview-section" class="content-section">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2 class="fw-bold text-dark">Account Overview</h2>
-                        <div class="text-muted">
-                            <small>User ID: <span id="userId">Loading...</span></small>
-                        </div>
+            <div class="card fund-card">
+                <div class="fund-title">Need help funding your account?</div>
+                <button class="btn btn-fund" onclick="fundAccount()">
+                    Fund Now
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="dashboard-page" class="page active">
+            <div class="card main-dashboard">
+                <div class="user-header">
+                    <div class="user-info">
+                        <h3>Kan Lume Bank</h3>
                     </div>
-                    
-                    <!-- Balance Cards -->
-                    <div class="row mb-4">
-                        <div class="col-md-6 mb-3">
-                            <div class="card balance-card">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="card-subtitle mb-2 opacity-75">Checking Account</h6>
-                                            <h3 class="card-title mb-0">€<span id="checkingBalance">0.00</span></h3>
-                                        </div>
-                                        <i class="fas fa-credit-card fa-2x opacity-75"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <div class="card savings-card">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="card-subtitle mb-2 opacity-75">Savings Account</h6>
-                                            <h3 class="card-title mb-0">€<span id="savingsBalance">0.00</span></h3>
-                                        </div>
-                                        <i class="fas fa-piggy-bank fa-2x opacity-75"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="user-avatar" id="userAvatar">KL</div>
+                </div>
+                
+                <div class="quick-actions">
+                    <button class="quick-action" onclick="showPage('transfer')">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transfer</span>
+                    </button>
+                    <button class="quick-action" onclick="fundAccount()">
+                        <i class="fas fa-wallet"></i>
+                        <span>Fund Wallet</span>
+                    </button>
+                    <button class="quick-action" onclick="showPage('account')">
+                        <i class="fas fa-receipt"></i>
+                        <span>Get Account Number</span>
+                    </button>
+                </div>
+                
+                <div class="balance-card">
+                    <div class="balance-label">Account Balance</div>
+                    <div class="balance-amount">₦<span id="totalBalance">0.00</span></div>
+                    <div class="balance-label">Available Balance</div>
+                    <button class="btn btn-action mt-3" onclick="showTransactions()">
+                        Show Transactions
+                    </button>
+                </div>
+                
+                <div class="transactions-section">
+                    <div class="section-header">
+                        <h6 class="mb-0">Recent Transactions</h6>
+                        <select class="form-select form-select-sm" style="width: auto;">
+                            <option>Monthly</option>
+                            <option>Weekly</option>
+                            <option>Daily</option>
+                        </select>
                     </div>
-                    
-                    <!-- Quick Actions -->
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <div class="card action-card text-center p-4">
-                                <i class="fas fa-paper-plane text-primary mb-3" style="font-size: 2rem;"></i>
-                                <h5>Transfer Money</h5>
-                                <p class="text-muted">Send money to other accounts</p>
-                                <button class="btn btn-primary" onclick="showSection('transfer')">Transfer</button>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card action-card text-center p-4">
-                                <i class="fas fa-file-invoice-dollar text-primary mb-3" style="font-size: 2rem;"></i>
-                                <h5>Pay Bills</h5>
-                                <p class="text-muted">Pay your bills online</p>
-                                <button class="btn btn-primary" onclick="showSection('billpay')">Pay Bills</button>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card action-card text-center p-4">
-                                <i class="fas fa-chart-line text-primary mb-3" style="font-size: 2rem;"></i>
-                                <h5>View History</h5>
-                                <p class="text-muted">Check your transactions</p>
-                                <button class="btn btn-primary" onclick="showSection('history')">View History</button>
-                            </div>
+                    <div id="transactionsList">
+                        <div class="text-center text-muted py-3">
+                            Loading transactions...
                         </div>
                     </div>
                 </div>
-                
-                <!-- Transfer Section -->
-                <div id="transfer-section" class="content-section" style="display: none;">
-                    <h2 class="fw-bold text-dark mb-4">Transfer Money</h2>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Internal Transfer</h5>
-                                </div>
-                                <div class="card-body">
-                                    <form id="internalTransferForm">
-                                        <div class="mb-3">
-                                            <label class="form-label">From Account</label>
-                                            <select class="form-select" id="fromAccount" required>
-                                                <option value="checking">Checking Account</option>
-                                                <option value="savings">Savings Account</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">To Account</label>
-                                            <select class="form-select" id="toAccount" required>
-                                                <option value="savings">Savings Account</option>
-                                                <option value="checking">Checking Account</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Amount (€)</label>
-                                            <input type="number" class="form-control" id="internalAmount" step="0.01" min="0.01" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100">Transfer</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">External Transfer</h5>
-                                </div>
-                                <div class="card-body">
-                                    <form id="externalTransferForm">
-                                        <div class="mb-3">
-                                            <label class="form-label">Recipient User ID</label>
-                                            <input type="text" class="form-control" id="recipientId" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">From Account</label>
-                                            <select class="form-select" id="externalFromAccount" required>
-                                                <option value="checking">Checking Account</option>
-                                                <option value="savings">Savings Account</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Amount (€)</label>
-                                            <input type="number" class="form-control" id="externalAmount" step="0.01" min="0.01" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Description</label>
-                                            <input type="text" class="form-control" id="transferDescription" placeholder="Optional">
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100">Send Money</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+            </div>
+            
+            <div class="spending-chart">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0">Spending Trend</h6>
+                    <select class="form-select form-select-sm" id="chartPeriod" style="width: auto;" onchange="updateSpendingChart()">
+                        <option value="7">Last 7 Days</option>
+                        <option value="30" selected>Last 30 Days</option>
+                        <option value="90">Last 3 Months</option>
+                    </select>
+                </div>
+                <div style="position: relative; height: 200px;">
+                    <canvas id="spendingChart"></canvas>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-4 text-center">
+                        <div class="small text-muted">Total Spent</div>
+                        <div class="fw-bold text-danger" id="totalSpent">₦0.00</div>
+                    </div>
+                    <div class="col-4 text-center">
+                        <div class="small text-muted">Total Received</div>
+                        <div class="fw-bold text-success" id="totalReceived">₦0.00</div>
+                    </div>
+                    <div class="col-4 text-center">
+                        <div class="small text-muted">Net Flow</div>
+                        <div class="fw-bold" id="netFlow">₦0.00</div>
                     </div>
                 </div>
-                
-                <!-- Transaction History Section -->
-                <div id="history-section" class="content-section" style="display: none;">
-                    <h2 class="fw-bold text-dark mb-4">Transaction History</h2>
+            </div>
+        </div>
+
+        <!-- Transfer Page -->
+        <div id="transfer-page" class="page">
+            <div class="card header-card">
+                <button class="back-btn" onclick="showPage('dashboard')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h5 class="mb-0">Transfer Money</h5>
+                <div></div>
+            </div>
+            
+            <div class="card" style="padding: 25px;">
+                <form id="transferForm">
+                    <div class="mb-3">
+                        <select class="form-select" id="recipientBank" required>
+                            <option value="">Recipient Bank</option>
+                            <option value="gtbank">GTBank</option>
+                            <option value="access">Access Bank</option>
+                            <option value="zenith">Zenith Bank</option>
+                            <option value="kanlume">Kan Lume Bank</option>
+                        </select>
+                    </div>
                     
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Type</th>
-                                            <th>Description</th>
-                                            <th>Amount</th>
-                                            <th>Balance</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="transactionTableBody">
-                                        <tr>
-                                            <td colspan="5" class="text-center text-muted">Loading transactions...</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="recipientAccount" placeholder="Account Number" required>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Bill Pay Section -->
-                <div id="billpay-section" class="content-section" style="display: none;">
-                    <h2 class="fw-bold text-dark mb-4">Bill Pay</h2>
                     
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Pay a Bill</h5>
-                                </div>
-                                <div class="card-body">
-                                    <form id="billPayForm">
-                                        <div class="mb-3">
-                                            <label class="form-label">Payee</label>
-                                            <select class="form-select" id="payee" required>
-                                                <option value="">Select a payee</option>
-                                                <option value="Electricity Company">Electricity Company</option>
-                                                <option value="Water Company">Water Company</option>
-                                                <option value="Internet Provider">Internet Provider</option>
-                                                <option value="Phone Company">Phone Company</option>
-                                                <option value="Insurance Company">Insurance Company</option>
-                                                <option value="Credit Card">Credit Card Payment</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Account Number</label>
-                                            <input type="text" class="form-control" id="accountNumber" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Amount (€)</label>
-                                            <input type="number" class="form-control" id="billAmount" step="0.01" min="0.01" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Payment Date</label>
-                                            <input type="date" class="form-control" id="paymentDate" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Notes</label>
-                                            <textarea class="form-control" id="billNotes" rows="3" placeholder="Optional notes"></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100">Pay Bill</button>
-                                    </form>
-                                </div>
-                            </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">₦</span>
+                            <input type="number" class="form-control" id="transferAmount" placeholder="50,000" required>
                         </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">₦</span>
+                            <input type="text" class="form-control" id="transferDescription" placeholder="Description (optional)">
+                        </div>
+                    </div>
+                    
+                    <div id="recipientVerification" class="mb-3" style="display: none;">
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i> Verified: <span id="verifiedName"></span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-action w-100 mb-4">
+                        Send Money
+                    </button>
+                </form>
+                
+                <div class="mt-4">
+                    <h6>Transaction Summary</h6>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Fee</span>
+                        <span>₦<span id="transferFee">10</span></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Delivery</span>
+                        <span id="deliveryTime">Instant</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Delivery:</span>
+                        <span id="deliveryAmount">₦0</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between fw-bold">
+                        <span>Total</span>
+                        <span>₦<span id="totalAmount">0</span></span>
                     </div>
                 </div>
             </div>
@@ -367,6 +459,11 @@
             if (user) {
                 currentUser = user;
                 await loadUserData();
+                await loadTransactions();
+                
+                // Initialize and update spending chart
+                initializeSpendingChart();
+                await updateSpendingChart();
             } else {
                 window.location.href = 'login.html';
             }
@@ -374,143 +471,810 @@
 
         // Load user data from Firestore
         async function loadUserData() {
-            const result = await FirebaseService.getUserData(currentUser.uid);
-            if (result.success) {
-                userData = result.data;
-                updateUI();
-                loadTransactions();
-            } else {
-                console.error('Error loading user data:', result.error);
+            try {
+                const result = await FirebaseService.getUserData(currentUser.uid);
+                if (result.success) {
+                    userData = result.data;
+                    updateUI();
+                    loadTransactions();
+                } else {
+                    console.error('Error loading user data:', result.error);
+                }
+            } catch (error) {
+                console.error('Exception in loadUserData:', error);
             }
         }
 
         // Update UI with user data
         function updateUI() {
-            document.getElementById('userName').textContent = userData.fullName;
-            document.getElementById('userEmail').textContent = userData.email;
-            document.getElementById('userId').textContent = userData.userId;
-            document.getElementById('checkingBalance').textContent = userData.checkingBalance.toFixed(2);
-            document.getElementById('savingsBalance').textContent = userData.savingsBalance.toFixed(2);
+            if (!userData) return;
+            
+            // Update account page
+            document.getElementById('accountUserName').textContent = userData.fullName || 'Eseose Kadiri Silva';
+            document.getElementById('displayAccountNumber').textContent = userData.accountNumber || '1234567890';
+            
+            // Update dashboard
+            const totalBalance = (userData.checkingBalance || 0) + (userData.savingsBalance || 0);
+            document.getElementById('totalBalance').textContent = totalBalance.toLocaleString('en-NG', {minimumFractionDigits: 2});
+            
+            // Update user avatar
+            const initials = (userData.fullName || 'User').split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('userAvatar').textContent = initials;
         }
 
-        // Load transaction history
-        function loadTransactions() {
-            const tbody = document.getElementById('transactionTableBody');
-            if (userData.transactions && userData.transactions.length > 0) {
-                tbody.innerHTML = '';
-                userData.transactions.reverse().forEach(transaction => {
-                    const row = document.createElement('tr');
-                    row.className = 'transaction-row';
-                    row.innerHTML = `
-                        <td>${new Date(transaction.date).toLocaleDateString()}</td>
-                        <td><span class="badge bg-${transaction.type === 'credit' ? 'success' : 'danger'}">${transaction.type}</span></td>
-                        <td>${transaction.description}</td>
-                        <td class="${transaction.type === 'credit' ? 'text-success' : 'text-danger'}">
-                            ${transaction.type === 'credit' ? '+' : '-'}€${Math.abs(transaction.amount).toFixed(2)}
-                        </td>
-                        <td>€${transaction.balance.toFixed(2)}</td>
+        // Load transaction history with enhanced features
+        async function loadTransactions(filter = 'all', limit = 10) {
+            const container = document.getElementById('transactionsList');
+            container.innerHTML = '<div class="text-center text-muted py-3"><i class="fas fa-spinner fa-spin"></i> Loading transactions...</div>';
+            
+            try {
+                const transactions = await FirebaseService.getUserTransactions(currentUser.uid);
+                
+                if (!transactions || transactions.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-receipt fa-2x mb-3"></i>
+                            <div>No transactions found</div>
+                            <small>Your transaction history will appear here</small>
+                        </div>
                     `;
-                    tbody.appendChild(row);
+                    return;
+                }
+                
+                // Filter transactions based on selected filter
+                let filteredTransactions = transactions;
+                const now = new Date();
+                
+                switch(filter) {
+                    case 'daily':
+                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                        filteredTransactions = transactions.filter(t => new Date(t.date) >= today);
+                        break;
+                    case 'weekly':
+                        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                        filteredTransactions = transactions.filter(t => new Date(t.date) >= weekAgo);
+                        break;
+                    case 'monthly':
+                        const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                        filteredTransactions = transactions.filter(t => new Date(t.date) >= monthAgo);
+                        break;
+                }
+                
+                // Sort by date (newest first) and limit results
+                const sortedTransactions = filteredTransactions
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .slice(0, limit);
+                
+                if (sortedTransactions.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-filter fa-2x mb-3"></i>
+                            <div>No transactions found for this period</div>
+                            <small>Try selecting a different time range</small>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = sortedTransactions.map(transaction => {
+                    const transactionDate = new Date(transaction.date);
+                    const isToday = transactionDate.toDateString() === now.toDateString();
+                    const isYesterday = transactionDate.toDateString() === new Date(now.getTime() - 24 * 60 * 60 * 1000).toDateString();
+                    
+                    let dateDisplay;
+                    if (isToday) {
+                        dateDisplay = `Today, ${transactionDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+                    } else if (isYesterday) {
+                        dateDisplay = `Yesterday, ${transactionDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+                    } else {
+                        dateDisplay = transactionDate.toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+                    
+                    // Determine transaction type and styling
+                    let icon, iconClass, amountClass, sign, bgColor;
+                    
+                    switch(transaction.type) {
+                        case 'credit':
+                        case 'deposit':
+                        case 'welcome_bonus':
+                            icon = 'fa-arrow-down';
+                            iconClass = 'credit';
+                            amountClass = 'amount-credit';
+                            sign = '+';
+                            bgColor = '#e8f5e8';
+                            break;
+                        case 'debit':
+                        case 'withdrawal':
+                        case 'transfer':
+                        case 'external_transfer':
+                        case 'internal_transfer':
+                            icon = 'fa-arrow-up';
+                            iconClass = 'debit';
+                            amountClass = 'amount-debit';
+                            sign = '-';
+                            bgColor = '#ffeaea';
+                            break;
+                        case 'bill_payment':
+                            icon = 'fa-file-invoice-dollar';
+                            iconClass = 'bill';
+                            amountClass = 'amount-debit';
+                            sign = '-';
+                            bgColor = '#fff3e0';
+                            break;
+                        case 'refund':
+                            icon = 'fa-undo';
+                            iconClass = 'refund';
+                            amountClass = 'amount-credit';
+                            sign = '+';
+                            bgColor = '#e3f2fd';
+                            break;
+                        default:
+                            icon = 'fa-exchange-alt';
+                            iconClass = 'default';
+                            amountClass = transaction.amount >= 0 ? 'amount-credit' : 'amount-debit';
+                            sign = transaction.amount >= 0 ? '+' : '-';
+                            bgColor = '#f5f5f5';
+                    }
+                    
+                    // Format description
+                    let description = transaction.description || 'Transaction';
+                    if (transaction.recipientName) {
+                        description = `To ${transaction.recipientName}`;
+                    } else if (transaction.senderName) {
+                        description = `From ${transaction.senderName}`;
+                    }
+                    
+                    // Add transaction status if pending
+                    const statusBadge = transaction.status === 'pending' ? 
+                        '<span class="badge bg-warning ms-2">Pending</span>' : '';
+                    
+                    return `
+                        <div class="transaction-item" style="background-color: ${bgColor}; border-left: 4px solid ${iconClass === 'credit' ? '#28a745' : iconClass === 'debit' ? '#dc3545' : '#ffc107'}; margin-bottom: 8px; border-radius: 8px; padding: 12px;">
+                            <div class="transaction-icon ${iconClass}" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <div class="transaction-details" style="flex: 1;">
+                                <div class="transaction-title" style="font-weight: 600; margin-bottom: 2px;">
+                                    ${description}
+                                    ${statusBadge}
+                                </div>
+                                <div class="transaction-date" style="font-size: 12px; color: #666;">
+                                    ${dateDisplay}
+                                    ${transaction.transactionId ? ` • ID: ${transaction.transactionId.slice(-6)}` : ''}
+                                </div>
+                                ${transaction.recipientAccount ? `<div class="transaction-account" style="font-size: 11px; color: #888;">Account: ${transaction.recipientAccount}</div>` : ''}
+                            </div>
+                            <div class="transaction-amount ${amountClass}" style="font-weight: 600; text-align: right;">
+                                <div>${sign}$${Math.abs(transaction.amount).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
+                                ${transaction.fee ? `<div style="font-size: 10px; color: #888;">Fee: $${transaction.fee.toFixed(2)}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                // Add "View All" button if there are more transactions
+                if (transactions.length > limit) {
+                    container.innerHTML += `
+                        <div class="text-center mt-3">
+                            <button class="btn btn-outline-primary btn-sm" onclick="showAllTransactions()">
+                                <i class="fas fa-list"></i> View All Transactions (${transactions.length})
+                            </button>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('Error loading transactions:', error);
+                container.innerHTML = `
+                    <div class="text-center text-danger py-4">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                        <div>Error loading transactions</div>
+                        <small>Please try again later</small>
+                        <br>
+                        <button class="btn btn-sm btn-outline-primary mt-2" onclick="loadTransactions()">
+                            <i class="fas fa-refresh"></i> Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        // Enhanced transaction filter handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterSelect = document.querySelector('.transactions-section select');
+            if (filterSelect) {
+                filterSelect.addEventListener('change', function() {
+                    const filterValue = this.value.toLowerCase();
+                    loadTransactions(filterValue);
                 });
-            } else {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No transactions found</td></tr>';
+            }
+        });
+        
+        // Show all transactions function
+        window.showAllTransactions = function() {
+            // Create a modal or new page for full transaction history
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">All Transactions</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <select class="form-select" id="modalTransactionFilter">
+                                        <option value="all">All Transactions</option>
+                                        <option value="daily">Today</option>
+                                        <option value="weekly">This Week</option>
+                                        <option value="monthly">This Month</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select" id="modalTransactionType">
+                                        <option value="all">All Types</option>
+                                        <option value="credit">Credits</option>
+                                        <option value="debit">Debits</option>
+                                        <option value="transfer">Transfers</option>
+                                        <option value="bill_payment">Bill Payments</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="modalTransactionsList">
+                                <div class="text-center py-3">
+                                    <i class="fas fa-spinner fa-spin"></i> Loading all transactions...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            
+            // Load all transactions in modal
+            loadModalTransactions();
+            
+            // Add event listeners for modal filters
+            modal.querySelector('#modalTransactionFilter').addEventListener('change', loadModalTransactions);
+            modal.querySelector('#modalTransactionType').addEventListener('change', loadModalTransactions);
+            
+            // Clean up modal when closed
+            modal.addEventListener('hidden.bs.modal', function() {
+                document.body.removeChild(modal);
+            });
+        };
+        
+        // Load transactions in modal with filters
+        async function loadModalTransactions() {
+            const container = document.getElementById('modalTransactionsList');
+            const timeFilter = document.getElementById('modalTransactionFilter').value;
+            const typeFilter = document.getElementById('modalTransactionType').value;
+            
+            container.innerHTML = '<div class="text-center py-3"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+            
+            try {
+                const transactions = await FirebaseService.getUserTransactions(currentUser.uid);
+                
+                if (!transactions || transactions.length === 0) {
+                    container.innerHTML = '<div class="text-center text-muted py-4">No transactions found</div>';
+                    return;
+                }
+                
+                // Apply filters
+                let filteredTransactions = transactions;
+                
+                // Time filter
+                if (timeFilter !== 'all') {
+                    const now = new Date();
+                    switch(timeFilter) {
+                        case 'daily':
+                            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                            filteredTransactions = filteredTransactions.filter(t => new Date(t.date) >= today);
+                            break;
+                        case 'weekly':
+                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            filteredTransactions = filteredTransactions.filter(t => new Date(t.date) >= weekAgo);
+                            break;
+                        case 'monthly':
+                            const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                            filteredTransactions = filteredTransactions.filter(t => new Date(t.date) >= monthAgo);
+                            break;
+                    }
+                }
+                
+                // Type filter
+                if (typeFilter !== 'all') {
+                    filteredTransactions = filteredTransactions.filter(t => {
+                        switch(typeFilter) {
+                            case 'credit':
+                                return ['credit', 'deposit', 'welcome_bonus', 'refund'].includes(t.type);
+                            case 'debit':
+                                return ['debit', 'withdrawal', 'transfer', 'external_transfer', 'internal_transfer', 'bill_payment'].includes(t.type);
+                            case 'transfer':
+                                return ['transfer', 'external_transfer', 'internal_transfer'].includes(t.type);
+                            case 'bill_payment':
+                                return t.type === 'bill_payment';
+                            default:
+                                return true;
+                        }
+                    });
+                }
+                
+                // Sort by date (newest first)
+                const sortedTransactions = filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                if (sortedTransactions.length === 0) {
+                    container.innerHTML = '<div class="text-center text-muted py-4">No transactions found for the selected filters</div>';
+                    return;
+                }
+                
+                // Group transactions by date
+                const groupedTransactions = {};
+                sortedTransactions.forEach(transaction => {
+                    const date = new Date(transaction.date).toDateString();
+                    if (!groupedTransactions[date]) {
+                        groupedTransactions[date] = [];
+                    }
+                    groupedTransactions[date].push(transaction);
+                });
+                
+                let html = '';
+                Object.keys(groupedTransactions).forEach(date => {
+                    const dateObj = new Date(date);
+                    const isToday = dateObj.toDateString() === new Date().toDateString();
+                    const isYesterday = dateObj.toDateString() === new Date(Date.now() - 24 * 60 * 60 * 1000).toDateString();
+                    
+                    let dateLabel;
+                    if (isToday) {
+                        dateLabel = 'Today';
+                    } else if (isYesterday) {
+                        dateLabel = 'Yesterday';
+                    } else {
+                        dateLabel = dateObj.toLocaleDateString('en-US', { 
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                    }
+                    
+                    html += `<div class="transaction-date-group mb-4">`;
+                    html += `<h6 class="text-muted mb-3 border-bottom pb-2">${dateLabel}</h6>`;
+                    
+                    groupedTransactions[date].forEach(transaction => {
+                        // Use the same transaction rendering logic as the main function
+                        const transactionDate = new Date(transaction.date);
+                        
+                        let icon, iconClass, amountClass, sign, bgColor;
+                        
+                        switch(transaction.type) {
+                            case 'credit':
+                            case 'deposit':
+                            case 'welcome_bonus':
+                                icon = 'fa-arrow-down';
+                                iconClass = 'credit';
+                                amountClass = 'amount-credit';
+                                sign = '+';
+                                bgColor = '#e8f5e8';
+                                break;
+                            case 'debit':
+                            case 'withdrawal':
+                            case 'transfer':
+                            case 'external_transfer':
+                            case 'internal_transfer':
+                                icon = 'fa-arrow-up';
+                                iconClass = 'debit';
+                                amountClass = 'amount-debit';
+                                sign = '-';
+                                bgColor = '#ffeaea';
+                                break;
+                            case 'bill_payment':
+                                icon = 'fa-file-invoice-dollar';
+                                iconClass = 'bill';
+                                amountClass = 'amount-debit';
+                                sign = '-';
+                                bgColor = '#fff3e0';
+                                break;
+                            case 'refund':
+                                icon = 'fa-undo';
+                                iconClass = 'refund';
+                                amountClass = 'amount-credit';
+                                sign = '+';
+                                bgColor = '#e3f2fd';
+                                break;
+                            default:
+                                icon = 'fa-exchange-alt';
+                                iconClass = 'default';
+                                amountClass = transaction.amount >= 0 ? 'amount-credit' : 'amount-debit';
+                                sign = transaction.amount >= 0 ? '+' : '-';
+                                bgColor = '#f5f5f5';
+                        }
+                        
+                        let description = transaction.description || 'Transaction';
+                        if (transaction.recipientName) {
+                            description = `To ${transaction.recipientName}`;
+                        } else if (transaction.senderName) {
+                            description = `From ${transaction.senderName}`;
+                        }
+                        
+                        const statusBadge = transaction.status === 'pending' ? 
+                            '<span class="badge bg-warning ms-2">Pending</span>' : '';
+                        
+                        html += `
+                            <div class="transaction-item mb-2" style="background-color: ${bgColor}; border-left: 4px solid ${iconClass === 'credit' ? '#28a745' : iconClass === 'debit' ? '#dc3545' : '#ffc107'}; border-radius: 8px; padding: 12px;">
+                                <div class="d-flex align-items-center">
+                                    <div class="transaction-icon ${iconClass} me-3" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas ${icon}"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold mb-1">
+                                            ${description}
+                                            ${statusBadge}
+                                        </div>
+                                        <div class="small text-muted">
+                                            ${transactionDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                                            ${transaction.transactionId ? ` • ID: ${transaction.transactionId.slice(-8)}` : ''}
+                                        </div>
+                                        ${transaction.recipientAccount ? `<div class="small text-muted">Account: ${transaction.recipientAccount}</div>` : ''}
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold ${amountClass}">
+                                            ${sign}$${Math.abs(transaction.amount).toLocaleString('en-US', {minimumFractionDigits: 2})}
+                                        </div>
+                                        ${transaction.fee ? `<div class="small text-muted">Fee: $${transaction.fee.toFixed(2)}</div>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                });
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading modal transactions:', error);
+                container.innerHTML = '<div class="text-center text-danger py-4">Error loading transactions</div>';
             }
         }
 
-        // Internal transfer
-        document.getElementById('internalTransferForm').addEventListener('submit', async (e) => {
+        // Page navigation
+        window.showPage = function(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId + '-page').classList.add('active');
+        };
+
+        // Transfer form handling
+        document.getElementById('transferForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const fromAccount = document.getElementById('fromAccount').value;
-            const toAccount = document.getElementById('toAccount').value;
-            const amount = parseFloat(document.getElementById('internalAmount').value);
+            const recipientAccount = document.getElementById('recipientAccount').value;
+            const amount = parseFloat(document.getElementById('transferAmount').value);
+            const description = document.getElementById('transferDescription').value || 'Transfer';
             
-            if (fromAccount === toAccount) {
-                alert('Cannot transfer to the same account');
+            if (amount > userData.checkingBalance) {
+                alert('Insufficient funds');
                 return;
             }
             
-            const result = await FirebaseService.internalTransfer(
-                currentUser.uid, fromAccount, toAccount, amount
-            );
-            
-            if (result.success) {
-                alert('Transfer completed successfully!');
-                await loadUserData();
-                document.getElementById('internalTransferForm').reset();
-            } else {
-                alert('Transfer failed: ' + result.error);
-            }
-        });
-
-        // External transfer
-        document.getElementById('externalTransferForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const recipientId = document.getElementById('recipientId').value;
-            const fromAccount = document.getElementById('externalFromAccount').value;
-            const amount = parseFloat(document.getElementById('externalAmount').value);
-            const description = document.getElementById('transferDescription').value || 'External transfer';
-            
             const result = await FirebaseService.externalTransfer(
-                currentUser.uid, recipientId, fromAccount, amount, description
+                currentUser.uid, recipientAccount, 'checking', amount, description
             );
             
             if (result.success) {
                 alert('Transfer completed successfully!');
                 await loadUserData();
-                document.getElementById('externalTransferForm').reset();
+                document.getElementById('transferForm').reset();
+                showPage('dashboard');
             } else {
                 alert('Transfer failed: ' + result.error);
             }
         });
 
-        // Bill pay
-        document.getElementById('billPayForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // Update transfer summary when amount changes
+        document.getElementById('transferAmount').addEventListener('input', function() {
+            const amount = parseFloat(this.value) || 0;
+            const fee = 10;
+            const total = amount + fee;
             
-            const payee = document.getElementById('payee').value;
-            const accountNumber = document.getElementById('accountNumber').value;
-            const amount = parseFloat(document.getElementById('billAmount').value);
-            const notes = document.getElementById('billNotes').value;
-            
-            const result = await FirebaseService.payBill(
-                currentUser.uid, payee, accountNumber, amount, notes
-            );
-            
-            if (result.success) {
-                alert('Bill payment completed successfully!');
-                await loadUserData();
-                document.getElementById('billPayForm').reset();
+            document.getElementById('deliveryAmount').textContent = `₦${amount.toLocaleString('en-NG')}`;
+            document.getElementById('totalAmount').textContent = total.toLocaleString('en-NG');
+        });
+
+        // Account verification simulation
+        document.getElementById('recipientAccount').addEventListener('blur', function() {
+            const accountNumber = this.value;
+            if (accountNumber.length >= 10) {
+                // Simulate account verification
+                setTimeout(() => {
+                    document.getElementById('verifiedName').textContent = 'John Doe - GTBank';
+                    document.getElementById('recipientVerification').style.display = 'block';
+                }, 1000);
             } else {
-                alert('Bill payment failed: ' + result.error);
+                document.getElementById('recipientVerification').style.display = 'none';
             }
         });
 
-        // Navigation
-        document.querySelectorAll('[data-section]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const section = e.target.getAttribute('data-section');
-                showSection(section);
-                
-                // Update active nav link
-                document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
-                e.target.classList.add('active');
-            });
+        // Enhanced utility functions with navigation
+        window.shareAccountDetails = function() {
+            const accountInfo = `Kan Lume Bank\nAccount Name: ${userData.fullName}\nAccount Number: ${userData.accountNumber || '1234567890'}`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Account Details',
+                    text: accountInfo
+                });
+            } else {
+                navigator.clipboard.writeText(accountInfo);
+                showToast('Account details copied to clipboard!');
+            }
+        };
+
+        window.copyAccountNumber = function() {
+            const accountNumber = userData.accountNumber || '1234567890';
+            navigator.clipboard.writeText(accountNumber);
+            showToast('Account number copied!');
+        };
+
+        window.fundAccount = function() {
+            showToast('Fund account feature coming soon!');
+        };
+
+        window.showTransactions = function() {
+            // Navigate to a full transactions page or modal
+            showFullTransactionModal();
+        };
+        
+        // Enhanced toast notification system
+        function showToast(message, type = 'info') {
+            // Remove existing toasts
+            const existingToast = document.querySelector('.toast-notification');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = `toast-notification toast-${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Add toast styles
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#4285f4'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 25px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 9999;
+                animation: slideDown 0.3s ease;
+                max-width: 90%;
+                text-align: center;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // Add CSS animations for toast
+        const toastStyles = document.createElement('style');
+        toastStyles.textContent = `
+            @keyframes slideDown {
+                from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            }
+            .toast-content {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+        `;
+        document.head.appendChild(toastStyles);
+        
+        // Handle browser back button
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.page) {
+                showPage(event.state.page, false);
+            } else {
+                showPage('dashboard', false);
+            }
+        });
+        
+        // Update browser history when navigating
+        const originalShowPage = window.showPage;
+        window.showPage = function(pageId, addToHistory = true) {
+            originalShowPage(pageId, addToHistory);
+            
+            if (addToHistory) {
+                history.pushState({ page: pageId }, '', `#${pageId}`);
+            }
+        };
+        
+        // Initialize navigation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check URL hash for initial page
+            const hash = window.location.hash.substring(1);
+            const validPages = ['dashboard', 'account', 'transfer', 'virtual-card', 'transactions'];
+            
+            if (hash && validPages.includes(hash)) {
+                showPage(hash, false);
+            } else {
+                showPage('dashboard', false);
+            }
         });
 
-        // Show section function
-        window.showSection = function(sectionName) {
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            document.getElementById(sectionName + '-section').style.display = 'block';
+        let spendingChart = null;
+
+        // Initialize spending chart
+        function initializeSpendingChart() {
+            const ctx = document.getElementById('spendingChart').getContext('2d');
             
-            // Update nav
-            document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
-            document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
-        };
+            spendingChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Spending',
+                        data: [],
+                        borderColor: '#dc3545',
+                        backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Income',
+                        data: [],
+                        borderColor: '#28a745',
+                        backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₦' + value.toLocaleString();
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 4,
+                            hoverRadius: 6
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update spending chart with transaction data
+        async function updateSpendingChart() {
+            try {
+                const period = parseInt(document.getElementById('chartPeriod').value);
+                const endDate = new Date();
+                const startDate = new Date();
+                startDate.setDate(startDate.getDate() - period);
+
+                // Get transactions for the period
+                const transactions = await FirebaseService.getUserTransactions(currentUser.uid);
+                const filteredTransactions = transactions.filter(t => {
+                    const transactionDate = new Date(t.date);
+                    return transactionDate >= startDate && transactionDate <= endDate;
+                });
+
+                // Group transactions by date
+                const dailyData = {};
+                
+                // Initialize all dates in the period
+                for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                    const dateStr = d.toISOString().split('T')[0];
+                    dailyData[dateStr] = { spending: 0, income: 0 };
+                }
+
+                // Aggregate transaction data
+                filteredTransactions.forEach(transaction => {
+                    const dateStr = new Date(transaction.date).toISOString().split('T')[0];
+                    if (dailyData[dateStr]) {
+                        if (transaction.type === 'debit' || transaction.type === 'transfer' || 
+                            transaction.type === 'external_transfer' || transaction.type === 'bill_payment') {
+                            dailyData[dateStr].spending += Math.abs(transaction.amount);
+                        } else if (transaction.type === 'credit' || transaction.type === 'deposit' || 
+                                 transaction.type === 'welcome_bonus' || transaction.type === 'refund') {
+                            dailyData[dateStr].income += Math.abs(transaction.amount);
+                        }
+                    }
+                });
+
+                // Prepare chart data
+                const labels = [];
+                const spendingData = [];
+                const incomeData = [];
+                let totalSpent = 0;
+                let totalReceived = 0;
+
+                Object.keys(dailyData).sort().forEach(dateStr => {
+                    const date = new Date(dateStr);
+                    const label = period <= 7 ? 
+                        date.toLocaleDateString('en-US', { weekday: 'short' }) :
+                        date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    
+                    labels.push(label);
+                    spendingData.push(dailyData[dateStr].spending);
+                    incomeData.push(dailyData[dateStr].income);
+                    
+                    totalSpent += dailyData[dateStr].spending;
+                    totalReceived += dailyData[dateStr].income;
+                });
+
+                // Update chart
+                if (spendingChart) {
+                    spendingChart.data.labels = labels;
+                    spendingChart.data.datasets[0].data = spendingData;
+                    spendingChart.data.datasets[1].data = incomeData;
+                    spendingChart.update();
+                }
+
+                // Update summary statistics
+                document.getElementById('totalSpent').textContent = `₦${totalSpent.toLocaleString('en-NG', {minimumFractionDigits: 2})}`;
+                document.getElementById('totalReceived').textContent = `₦${totalReceived.toLocaleString('en-NG', {minimumFractionDigits: 2})}`;
+                
+                const netFlow = totalReceived - totalSpent;
+                const netFlowElement = document.getElementById('netFlow');
+                netFlowElement.textContent = `₦${Math.abs(netFlow).toLocaleString('en-NG', {minimumFractionDigits: 2})}`;
+                netFlowElement.className = netFlow >= 0 ? 'fw-bold text-success' : 'fw-bold text-danger';
+
+            } catch (error) {
+                console.error('Error updating spending chart:', error);
+            }
+        }
 
         // Logout function
         window.logout = async function() {
@@ -519,9 +1283,10 @@
                 window.location.href = 'login.html';
             }
         };
-
-        // Set default payment date to today
-        document.getElementById('paymentDate').valueAsDate = new Date();
     </script>
 </body>
 </html>
+
+<head>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.gstatic.com https://cdn.firebase.com; object-src 'none';">
+</head>
